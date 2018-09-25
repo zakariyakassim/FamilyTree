@@ -5,18 +5,53 @@ import java.util.ArrayList;
 public class Person {
 
     public static enum Gender {
-        MALE,
-        FEMALE;
+        MALE {
+            public String toString() {
+                return "Male";
+            }
+        },
+        FEMALE {
+            public String toString() {
+                return "Female";
+            }
+        };
     }
 
     private String name;
     private Gender gender;
-    private Person father;
-    private Person mother;
-    private ArrayList<Person> children;
+    private Person spouse;
+    private ArrayList<Person> parents = new ArrayList<>();
+    private ArrayList<Person> children = new ArrayList<>();
+
+    public Person() {
+
+
+    }
+
+    public Person(String name) {
+        this.name = name;
+    }
+
+    public Person(String name, Gender gender) {
+        this.name = name;
+        this.gender = gender;
+    }
 
     public String getName() {
         return name;
+    }
+
+    public void addParent(Person parent) {
+        this.parents.add(parent);
+
+        if (this.parents.size() == 2) {
+            this.parents.get(0).setSpouse(this.parents.get(1));
+            this.parents.get(1).setSpouse(this.parents.get(0));
+        }
+    }
+
+    public ArrayList<Person> getParents() {
+        return this.parents;
     }
 
     public void setName(String name) {
@@ -31,43 +66,23 @@ public class Person {
         this.gender = gender;
     }
 
-    public Person getFather() {
-        return father;
-    }
 
-    public void setFather(Person father) {
-        this.father = father;
-    }
-
-    public void setParent(Person parent){
-        if (parent.getGender() == Gender.MALE){
-            this.father = parent;
-        }
-        if (parent.getGender() == Gender.FEMALE){
-            this.mother = parent;
-        }
-    }
-    public Person getMother() {
-        return mother;
-    }
-
-    public void setMother(Person mother) {
-        this.mother = mother;
-    }
 
     public ArrayList<Person> getChildren() {
         return children;
     }
 
-    public void setChildren(ArrayList<Person> children) {
-        this.children = children;
+    public void addChild(Person child) {
+        this.children.add(child);
     }
 
-    public ArrayList<String> getParents(){
-        ArrayList<String> parents = new ArrayList<>();
-        parents.add(this.father.getName());
-        parents.add(this.mother.getName());
-        return parents;
+
+    public Person getSpouse() {
+        return spouse;
+    }
+
+    public void setSpouse(Person spouse) {
+        this.spouse = spouse;
     }
 
     @Override
